@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        acbcgui.cpp
+        acbcgui.cpp \
+    LED/qledindicator.cpp
 
-HEADERS  += acbcgui.h
+HEADERS  += acbcgui.h \
+    LED/qledindicator.h
 
 FORMS    += acbcgui.ui
