@@ -11,12 +11,34 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = ACBC
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -std=c++1y
 
 SOURCES += main.cpp\
         acbcgui.cpp \
-    LED/qledindicator.cpp
+    LED/qledindicator.cpp \
+    Alix/alixcom.cpp \
+    Error/ACBCError.cpp \
+    log/Logger.cpp \
+    pugi/pugixml.cpp \
+    Socket/TCPAcceptor.cpp \
+    Socket/TCPConnector.cpp \
+    Socket/TCPStream.cpp \
+    Socket/TuxServer.cpp \
+    core.cpp
 
 HEADERS  += acbcgui.h \
-    LED/qledindicator.h
+    LED/qledindicator.h \
+    Alix/alixcom.h \
+    datastructs/states.h \
+    datastructs/structs.h \
+    Error/ACBCError.h \
+    log/Logger.h \
+    pugi/pugiconfig.hpp \
+    pugi/pugixml.hpp \
+    Socket/TCPAcceptor.h \
+    Socket/TCPConnector.h \
+    Socket/TCPStream.h \
+    Socket/TuxServer.h \
+    core.h
 
 FORMS    += acbcgui.ui
