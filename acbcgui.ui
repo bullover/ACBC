@@ -240,22 +240,6 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0" rowspan="2">
-     <widget class="QFrame" name="frame_Temperature">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>4</horstretch>
-        <verstretch>1</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_35">
       <property name="text">
@@ -550,6 +534,9 @@
          <property name="text">
           <string>T1 :</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="4" column="1">
@@ -679,6 +666,16 @@
       </layout>
      </widget>
     </item>
+    <item row="1" column="0" rowspan="2">
+     <widget class="tempplot" name="frame_Temperature" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>4</horstretch>
+        <verstretch>1</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -702,6 +699,14 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>tempplot</class>
+   <extends>QWidget</extends>
+   <header>Tempgraph/tempplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

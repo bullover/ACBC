@@ -72,7 +72,9 @@ void ACBCGui::Start()
     if(m_Core.GetState()==CoreState_t::STOP)
     {
         this->setTimer();
+         m_Core.SetCoreState(CoreState_t::START);
     }
+
 
 }
 
@@ -81,7 +83,7 @@ void ACBCGui::Stop()
     if(m_Core.GetState()==CoreState_t::START)
     {
         m_Core.SetCoreState(CoreState_t::STOP);
-        this->stopTimer();
+        //this->stopTimer();
 
     }
 
@@ -99,6 +101,8 @@ void ACBCGui::Reset()
 void ACBCGui::Quit()
 {
     m_Core.SetCoreState(CoreState_t::EXIT);
+    this->close();
+
 }
 
 void ACBCGui::Mute()
@@ -130,6 +134,7 @@ void ACBCGui::UpdateData()
         case CoreState_t::ERROR:
             ss2 << buffer << " ERROR";
             this->ui->textEdit_Status->append(QString::fromStdString(ss2.str()));
+            return void();
             break;
         case CoreState_t::START:
         ss2 << buffer << " Start";
@@ -138,10 +143,12 @@ void ACBCGui::UpdateData()
         case CoreState_t::STOP:
         ss2 << buffer << " Stop";
         this->ui->textEdit_Status->append(QString::fromStdString(ss2.str()));
+        return void();
             break;
         case CoreState_t::EXIT:
         ss2 << buffer << " Exit";
         this->ui->textEdit_Status->append(QString::fromStdString(ss2.str()));
+        return void();
             break;
         default:
             break;
@@ -162,10 +169,10 @@ void ACBCGui::UpdateData()
     this->ui->lcdNumber_T5->display(m_ptr_Sensordata->ThermoValue[4]);
 
     ss <<buffer<<" "<< m_ptr_Sensordata->ThermoValue[0]<<" "<< m_ptr_Sensordata->ThermoValue[1]
-           <<" "<< m_ptr_Sensordata->ThermoValue[2] <<" "<< m_ptr_Sensordata->ThermoValue[3] <<" "<< m_ptr_Sensordata->ThermoValue[4]
-       ;
+           <<" "<< m_ptr_Sensordata->ThermoValue[2] <<" "<< m_ptr_Sensordata->ThermoValue[3] <<" "<< m_ptr_Sensordata->ThermoValue[4];
 
     this->ui->textEdit_TempRec->append(QString::fromStdString(ss.str()));
+
 
 
     this->ui->lcdNumber_P1->display(m_ptr_SensordataFast->P1Value);
@@ -175,9 +182,12 @@ void ACBCGui::UpdateData()
     this->ui->lcdNumber_v2->display(m_ptr_SensordataFast->MV2Value);
     this->ui->lcdNumber_massflow->display(m_ptr_SensordataFast->MassValue);
 
-    m_TotalCO2 += m_ptr_SensordataFast->MassValue*0.5;
+    m_TotalCO2 += m_ptr_SensordataFast->MassValue*0.5/1000;
     this->ui->lcdNumber_CO2->display(m_TotalCO2);
 
-
+    this->ui->frame_Temperature->PlotGraphs(m_ptr_Sensordata->ThermoValue[0],ui->checkBox_T1->isChecked(),
+                                            m_ptr_Sensordata->ThermoValue[1],ui->checkBox_T2->isChecked(),
+                                            m_ptr_Sensordata->ThermoValue[2],ui->checkBox_T3->isChecked(),
+                                            m_ptr_Sensordata->ThermoValue[3],ui->checkBox_T4->isChecked());
 
 }

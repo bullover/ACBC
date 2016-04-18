@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <LED/qledindicator.h>
 #include "core.h"
+#include "Tempgraph/tempplot.h"
 
 namespace Ui {
     class ACBCGui;
@@ -36,6 +37,8 @@ private:
     const SensorDataFast *m_ptr_SensordataFast;
     double m_TotalCO2;
 
+
+
     ///LEDs
     QLedIndicator *Led_T5;
     QLedIndicator *Led_H1;
@@ -49,7 +52,7 @@ private:
     QLedIndicator *Led_MV1;
     QLedIndicator *Led_MV2;
 
-public:
+//private:
     inline void setTimer()
     {
         if(!(ptr_timer->isActive()))

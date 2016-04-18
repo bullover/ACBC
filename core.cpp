@@ -57,7 +57,10 @@ void Core::CoreThread()
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
         m_Counter > 10000 ? m_Counter = 0 : m_Counter++;
     }
-    m_uptr_CoreAlixCom->AlixEndConn();
+    if(m_uptr_CoreAlixCom->CheckAlixTCPStream())
+    {
+        m_uptr_CoreAlixCom->AlixEndConn();
+    }
 }
 
 void Core::CoreConfig()

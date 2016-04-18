@@ -18,6 +18,18 @@ public:
     void AlixEndConn();
 private:
     std::unique_ptr<TCPStream> m_AlixTCPStream;
+
+public:
+    inline bool CheckAlixTCPStream()
+    {
+        if(m_AlixTCPStream==nullptr)
+        {
+            return false;
+        }else
+        {
+            return true;
+        }
+    }
 };
 
 #endif // ALIXCOM_H

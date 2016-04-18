@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = ACBC
 TEMPLATE = app
@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     Socket/TCPConnector.cpp \
     Socket/TCPStream.cpp \
     Socket/TuxServer.cpp \
-    core.cpp
+    core.cpp \
+    qcustomplot/qcustomplot.cpp \
+    Tempgraph/tempplot.cpp
 
 HEADERS  += acbcgui.h \
     LED/qledindicator.h \
@@ -39,6 +41,9 @@ HEADERS  += acbcgui.h \
     Socket/TCPConnector.h \
     Socket/TCPStream.h \
     Socket/TuxServer.h \
-    core.h
+    core.h \
+    qcustomplot/qcustomplot.h \
+    Tempgraph/tempplot.h
 
-FORMS    += acbcgui.ui
+FORMS    += acbcgui.ui \
+    Tempgraph/tempplot.ui

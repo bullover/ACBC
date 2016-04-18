@@ -37,6 +37,7 @@ void Alixcom::AlixReadSlow(std::unique_ptr<SensorData> &SD)
 {
     ///@ Thermo Sensors
     std::stringstream ss;
+    //ss<<std::setprecision(2)<<std::fixed();
     ss << "x" << char (0xd);
     m_AlixTCPStream->Send(ss.str());
 
@@ -49,13 +50,13 @@ void Alixcom::AlixReadSlow(std::unique_ptr<SensorData> &SD)
         //Depends on the format Alix is sending the string and at the end
         try{
             SD->ThermoValue[i] = std::stof(RecvString,&sz);
-            RecvString.erase(RecvString.begin()+sz);
+            RecvString.erase(RecvString.begin(),RecvString.begin()+sz);
         }catch(const std::out_of_range& ia)
         {
             std::cerr << "Out of Range error: " << ia.what() << '\n';
         }catch (const std::invalid_argument& ia)
         {
-            std::cerr << "Invalid argument: " << ia.what() << '\n';
+            std::cerr << "Invalid argument thermo: " << ia.what() << '\n';
         }
     }
 
@@ -67,13 +68,14 @@ void Alixcom::AlixReadSlow(std::unique_ptr<SensorData> &SD)
     m_AlixTCPStream->Receive(RecvString,100,char(0xd));
     try{
         SD->H0TempValue = std::stof(RecvString,&sz);
-        SD->H0Value = std::stof (RecvString.substr(sz));
+        RecvString.erase(RecvString.begin(),RecvString.begin()+sz);
+        SD->H0Value = std::stof (RecvString);
     }catch(const std::out_of_range& ia)
     {
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument h0: " << ia.what() << '\n';
     }
 
     ss.str("");
@@ -89,7 +91,7 @@ void Alixcom::AlixReadSlow(std::unique_ptr<SensorData> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument h1: " << ia.what() << '\n';
     }
 
     ss.str("");
@@ -105,7 +107,7 @@ void Alixcom::AlixReadSlow(std::unique_ptr<SensorData> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument h2: " << ia.what() << '\n';
     }
 
     ss.str("");
@@ -121,7 +123,7 @@ void Alixcom::AlixReadSlow(std::unique_ptr<SensorData> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument h3: " << ia.what() << '\n';
     }
 
     ///@ Volume Sensor
@@ -137,7 +139,7 @@ void Alixcom::AlixReadSlow(std::unique_ptr<SensorData> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument g: " << ia.what() << '\n';
     }
 
 }
@@ -160,7 +162,7 @@ void Alixcom::AlixReadFast(std::unique_ptr<SensorDataFast> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument p0: " << ia.what() << '\n';
     }
 
     ss.str("");
@@ -175,7 +177,7 @@ void Alixcom::AlixReadFast(std::unique_ptr<SensorDataFast> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument p1: " << ia.what() << '\n';
     }
 
 
@@ -191,7 +193,7 @@ void Alixcom::AlixReadFast(std::unique_ptr<SensorDataFast> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument p2: " << ia.what() << '\n';
     }
 
     ///MassFlow Sensor
@@ -207,7 +209,7 @@ void Alixcom::AlixReadFast(std::unique_ptr<SensorDataFast> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument m: " << ia.what() << '\n';
     }
 
     ///@ Valves
@@ -223,7 +225,7 @@ void Alixcom::AlixReadFast(std::unique_ptr<SensorDataFast> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument v0: " << ia.what() << '\n';
     }
 
     ss.str("");
@@ -238,7 +240,7 @@ void Alixcom::AlixReadFast(std::unique_ptr<SensorDataFast> &SD)
         std::cerr << "Out of Range error: " << ia.what() << '\n';
     }catch (const std::invalid_argument& ia)
     {
-        std::cerr << "Invalid argument: " << ia.what() << '\n';
+        std::cerr << "Invalid argument v0: " << ia.what() << '\n';
     }
 
 }
