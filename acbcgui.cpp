@@ -189,5 +189,8 @@ void ACBCGui::UpdateData()
                                             m_ptr_Sensordata->ThermoValue[1],ui->checkBox_T2->isChecked(),
                                             m_ptr_Sensordata->ThermoValue[2],ui->checkBox_T3->isChecked(),
                                             m_ptr_Sensordata->ThermoValue[3],ui->checkBox_T4->isChecked());
+    this->ui->frame_Pressure->PlotGraphs(m_ptr_SensordataFast->P1Value,ui->checkBox_P1->isChecked()
+                                         ,m_ptr_SensordataFast->P2Value,ui->checkBox_P2->isChecked()
+                                         ,m_ptr_SensordataFast->P3Value,ui->checkBox_P3->isChecked());
 
 }

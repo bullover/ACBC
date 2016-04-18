@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     Socket/TuxServer.cpp \
     core.cpp \
     qcustomplot/qcustomplot.cpp \
-    Tempgraph/tempplot.cpp
+    Tempgraph/tempplot.cpp \
+    Tempgraph/pressureplot.cpp
 
 HEADERS  += acbcgui.h \
     LED/qledindicator.h \
@@ -43,7 +44,9 @@ HEADERS  += acbcgui.h \
     Socket/TuxServer.h \
     core.h \
     qcustomplot/qcustomplot.h \
-    Tempgraph/tempplot.h
+    Tempgraph/tempplot.h \
+    Tempgraph/pressureplot.h
 
 FORMS    += acbcgui.ui \
-    Tempgraph/tempplot.ui
+    Tempgraph/tempplot.ui \
+    Tempgraph/pressureplot.ui
