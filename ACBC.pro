@@ -27,7 +27,11 @@ SOURCES += main.cpp\
     core.cpp \
     qcustomplot/qcustomplot.cpp \
     Tempgraph/tempplot.cpp \
-    Tempgraph/pressureplot.cpp
+    Tempgraph/pressureplot.cpp \
+    log/logfile.cpp \
+    Dialogs/dialogaus.cpp \
+    Dialogs/dialogprint.cpp \
+    PID/pid.cpp
 
 HEADERS  += acbcgui.h \
     LED/qledindicator.h \
@@ -45,8 +49,14 @@ HEADERS  += acbcgui.h \
     core.h \
     qcustomplot/qcustomplot.h \
     Tempgraph/tempplot.h \
-    Tempgraph/pressureplot.h
+    Tempgraph/pressureplot.h \
+    log/logfile.h \
+    Dialogs/dialogaus.h \
+    Dialogs/dialogprint.h \
+    PID/pid.h
 
 FORMS    += acbcgui.ui \
     Tempgraph/tempplot.ui \
-    Tempgraph/pressureplot.ui
+    Tempgraph/pressureplot.ui \
+    Dialogs/dialogaus.ui \
+    Dialogs/dialogprint.ui

@@ -6,6 +6,7 @@
 #include <mutex>
 #include "Alix/alixcom.h"
 #include <fstream>
+#include <math.h>
 
 class Core
 {
@@ -40,7 +41,7 @@ private:
      CoreState_t m_CoreState;
      CoreStateDataReady m_CoreDataSlow;
      CoreStateDataReady m_CoreDataFast;
-     std::fstream m_txtFile;
+  //   std::fstream m_txtFile;
      unsigned int m_Counter;
      bool m_BoolExit;
 
@@ -94,7 +95,7 @@ public:
         m_CoreDataFast=CoreStateDataReady::READY;
      }
 
-     inline const SensorDataFast* GetDataFast()
+     inline SensorDataFast* GetDataFast()
      {
          std::lock_guard<std::mutex> lock(m_CoreMutexReadFast);
          if(m_CoreDataFast==CoreStateDataReady::READY)
@@ -109,55 +110,18 @@ public:
          }
      }
 
-//     inline void SetReadyStateFastReady()
-//     {
-//         std::lock_guard<std::mutex> lock(m_CoreMutexReadFast);
-//          m_CoreDataFast=CoreStateDataReady::PROC;
-//     }
-
-//     inline void SetReadyStateReady()
-//     {
-//         std::lock_guard<std::mutex> lock(m_CoreMutexRead);
-//         m_CoreDataSlow=CoreStateDataReady::PROC;
-//     }
-
-//     inline SetDataFastRead(CoreStateDataReady State)
-//     {
-//         std::lock_guard<std::mutex> lock(m_CoreMutexDataReady);
-//         std
-//     }
-
-
-
-//     inline void CoreWriteLOGFile()
-//     {
-//         //std::asctime(std::localtime(&result))
-//         time_t rawtime;
-//           struct tm * timeinfo;
-//           char buffer [15];
-
-//           time (&rawtime);
-//           timeinfo = localtime (&rawtime);
-
-//         strftime (buffer,15,"%a %I:%M:%S %p.",timeinfo);
-//         //std::time_t result = std::time(nullptr);
-//         m_txtFile << buffer << ","
-//                   << m_uptr_CoreSensorData->ThermoValue[0]<< "," << m_uptr_CoreSensorData->ThermoValue[1]<< ","
-//                   << m_uptr_CoreSensorData->ThermoValue[2] << ","<< m_uptr_CoreSensorData->ThermoValue[3]<< ","
-//                   << m_uptr_CoreSensorData->ThermoValue[4]<< ","
-//                   << m_uptr_CoreSensorData->H0Value<< ","<< m_uptr_CoreSensorData->H1Value<< ","
-//                   << m_uptr_CoreSensorData->H2Value<< ","<< m_uptr_CoreSensorData->H3Value<< ","
-//                   << m_uptr_CoreSensorData->H0TempValue<< ","<< m_uptr_CoreSensorData->H1TempValue<< ","
-//                   << m_uptr_CoreSensorData->H2TempValue<< ","<< m_uptr_CoreSensorData->H3TempValue<< ","
-//                   << m_uptr_CoreSensorDataFast->P1Value<< "," << m_uptr_CoreSensorDataFast->P2Value<< ","
-//                   << m_uptr_CoreSensorDataFast->P3Value<< ","
-//                   << m_uptr_CoreSensorDataFast->MassValue<< ","
-//                   << m_uptr_CoreSensorDataFast->MV1Value<< ","<< m_uptr_CoreSensorDataFast->MV2Value<< ","
-//                   << m_uptr_CoreSensorData->VolValue<< ","
-//                   << m_uptr_CoreSensorDataFast->MV1Out << ","<< m_uptr_CoreSensorDataFast->MV2Out <<'\n';
-//         m_txtFile.flush();
-//     }
-
+     inline void CalcDP(std::unique_ptr<SensorData> &SD)
+     {
+             float H = 0;
+             H = (log10(SD->H0Value)-2)/0.4343+(17.62*SD->H0TempValue)/(243.12+SD->H0TempValue);
+             SD->DP0 = 243.12*H/(17.62-H);
+             H = (log10(SD->H1Value)-2)/0.4343+(17.62*SD->H1TempValue)/(243.12+SD->H1TempValue);
+             SD->DP1 = 243.12*H/(17.62-H);
+             H = (log10(SD->H2Value)-2)/0.4343+(17.62*SD->H2TempValue)/(243.12+SD->H2TempValue);
+             SD->DP2 = 243.12*H/(17.62-H);
+             H = (log10(SD->H3Value)-2)/0.4343+(17.62*SD->H3TempValue)/(243.12+SD->H3TempValue);
+             SD->DP3 = 243.12*H/(17.62-H);
+     }
 
 };
 

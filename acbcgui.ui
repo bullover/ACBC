@@ -41,7 +41,15 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="1" column="0">
-        <widget class="QTextEdit" name="textEdit_TempRec"/>
+        <widget class="QTextEdit" name="textEdit_TempRec">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+        </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_17">
@@ -71,10 +79,17 @@
        <item row="2" column="1">
         <widget class="QLCDNumber" name="lcdNumber_massflow">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
            <verstretch>1</verstretch>
           </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
         </widget>
        </item>
@@ -150,12 +165,15 @@
        <item row="2" column="4">
         <widget class="QPushButton" name="pushButton_CO2">
          <property name="text">
-          <string>set Zero</string>
+          <string>set zero</string>
          </property>
         </widget>
        </item>
        <item row="1" column="9">
         <widget class="QDoubleSpinBox" name="doubleSpinBox_v1">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="decimals">
           <number>1</number>
          </property>
@@ -203,6 +221,9 @@
        </item>
        <item row="2" column="9">
         <widget class="QDoubleSpinBox" name="doubleSpinBox_v2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="decimals">
           <number>1</number>
          </property>
@@ -247,7 +268,15 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="1" column="0">
-        <widget class="QTextEdit" name="textEdit_Status"/>
+        <widget class="QTextEdit" name="textEdit_Status">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+        </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_18">
@@ -270,6 +299,9 @@
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="2" column="0">
         <widget class="QCheckBox" name="checkBox_P3">
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(0, 255, 0)</string>
+         </property>
          <property name="text">
           <string>P3 :</string>
          </property>
@@ -277,8 +309,14 @@
        </item>
        <item row="0" column="0">
         <widget class="QCheckBox" name="checkBox_P1">
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(0, 0, 255)</string>
+         </property>
          <property name="text">
           <string>P1 :</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -306,6 +344,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QCheckBox" name="checkBox_P2">
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(255, 0, 0)</string>
+         </property>
          <property name="text">
           <string>P2 :</string>
          </property>
@@ -368,6 +409,9 @@
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="1">
         <widget class="QPushButton" name="pushButton_Stop">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Stop</string>
          </property>
@@ -375,6 +419,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="pushButton_Mute">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Mute</string>
          </property>
@@ -389,6 +436,9 @@
        </item>
        <item row="0" column="2">
         <widget class="QPushButton" name="pushButton_Reset">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Reset</string>
          </property>
@@ -441,6 +491,9 @@
        </item>
        <item row="2" column="0">
         <widget class="QCheckBox" name="checkBox_T3">
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(0, 255, 0)</string>
+         </property>
          <property name="text">
           <string>T3 :</string>
          </property>
@@ -448,6 +501,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QCheckBox" name="checkBox_T2">
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(255, 0, 0)</string>
+         </property>
          <property name="text">
           <string>T2 :</string>
          </property>
@@ -478,7 +534,17 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLCDNumber" name="lcdNumber_T1"/>
+        <widget class="QLCDNumber" name="lcdNumber_T1">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label">
@@ -515,6 +581,9 @@
        </item>
        <item row="0" column="0">
         <widget class="QCheckBox" name="checkBox_T1">
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(0, 0, 255)</string>
+         </property>
          <property name="text">
           <string>T1 :</string>
          </property>
@@ -605,9 +674,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="5">
-        <widget class="QLCDNumber" name="lcdNumber_H1"/>
-       </item>
        <item row="1" column="5">
         <widget class="QLCDNumber" name="lcdNumber_H2"/>
        </item>
@@ -647,6 +713,9 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="5">
+        <widget class="QLCDNumber" name="lcdNumber_H1"/>
+       </item>
       </layout>
      </widget>
     </item>
@@ -667,6 +736,20 @@
         <horstretch>0</horstretch>
         <verstretch>1</verstretch>
        </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="label_36">
+      <property name="text">
+       <string>Pressure Value :</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="label_37">
+      <property name="text">
+       <string>Temperature Value :                                Dew Point :</string>
       </property>
      </widget>
     </item>

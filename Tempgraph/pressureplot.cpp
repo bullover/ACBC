@@ -97,3 +97,13 @@ void PressurePlot::PlotGraphs(double P1, bool P1vis,double P2, bool P2vis,double
     this->ui->QC_PressurePlot->replot();
 
 }
+
+void PressurePlot::clearall()
+{
+    this->ui->QC_PressurePlot->graph(0)->clearData();
+    this->ui->QC_PressurePlot->graph(1)->clearData();
+    this->ui->QC_PressurePlot->graph(2)->clearData();
+    this->ui->QC_PressurePlot->graph(3)->clearData();
+    this->ui->QC_PressurePlot->graph(4)->clearData();
+    this->ui->QC_PressurePlot->replot();
+}

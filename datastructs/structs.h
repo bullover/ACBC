@@ -11,7 +11,7 @@ struct SensorData
 {
     SensorData():H0Value(0),H1Value(0),H2Value(0),H3Value(0),
                  H0TempValue(0),H1TempValue(0),H2TempValue(0),H3TempValue(0),
-                 VolValue(0)
+                 VolValue(0),DP0(0),DP1(0),DP2(0),DP3(0)
 
     {
         ThermoValue.fill(0);
@@ -30,6 +30,11 @@ struct SensorData
     float H3TempValue;
 
     float VolValue;
+
+    float DP0;
+    float DP1;
+    float DP2;
+    float DP3;
 
 };
 

@@ -6,6 +6,8 @@
 #include <LED/qledindicator.h>
 #include "core.h"
 #include "Tempgraph/tempplot.h"
+#include "log/logfile.h"
+#include "PID/pid.h"
 
 namespace Ui {
     class ACBCGui;
@@ -25,7 +27,8 @@ public:
     void Quit();
     void Mute();
     void Info();
-    void UpdateData();
+    void UpdateData();    
+    void CO2();
 
 private:
     Ui::ACBCGui *ui;
@@ -34,8 +37,11 @@ private:
     Core m_Core;
     QTimer *ptr_timer;
     const SensorData *m_ptr_Sensordata;
-    const SensorDataFast *m_ptr_SensordataFast;
+    SensorDataFast *m_ptr_SensordataFast;
+    LogFile m_Logfile;
+    PID m_PID;
     double m_TotalCO2;
+
 
 
 
@@ -63,6 +69,7 @@ private:
         if(ptr_timer->isActive())
         this->ptr_timer->stop();
     }
+
 
 
 

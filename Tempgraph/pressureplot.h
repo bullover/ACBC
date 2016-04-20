@@ -16,6 +16,7 @@ public:
     ~PressurePlot();
 
     void PlotGraphs(double P1, bool P1vis, double P2, bool P2vis, double P3, bool P3vis);
+    void clearall();
 private:
     Ui::PressurePlot *ui;
 };

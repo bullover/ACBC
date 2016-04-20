@@ -114,3 +114,17 @@ void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3,
 
 
 }
+
+void tempplot::clearall()
+{
+    this->ui->QC_Templot->graph(0)->clearData();
+    this->ui->QC_Templot->graph(1)->clearData();
+    this->ui->QC_Templot->graph(2)->clearData();
+    this->ui->QC_Templot->graph(3)->clearData();
+    this->ui->QC_Templot->graph(4)->clearData();
+    this->ui->QC_Templot->graph(5)->clearData();
+    this->ui->QC_Templot->graph(6)->clearData();
+    this->ui->QC_Templot->graph(7)->clearData();
+    this->ui->QC_Templot->replot();
+}
+

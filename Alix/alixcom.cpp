@@ -10,14 +10,17 @@ Alixcom::Alixcom():m_AlixTCPStream(nullptr)
 
 void Alixcom::AlixConfig()
 {
+    if(m_AlixTCPStream==nullptr)
+    {
         std::string addr("localhost") ;
         auto connector = TCPConnector();
         m_AlixTCPStream.reset(connector.Connect(9999,addr));
+    }
 
-        if(m_AlixTCPStream == nullptr)
-        {
-            throw ACBCError(ACBCError::Error_t::FATAL,"AlixConfig ","Not Connected" );
-        }
+    if(m_AlixTCPStream == nullptr)
+    {
+        throw ACBCError(ACBCError::Error_t::FATAL,"AlixConfig ","Not Connected" );
+    }
 }
 
 void Alixcom::AlixWrite(std::unique_ptr<SensorDataFast> &SD)
@@ -250,7 +253,7 @@ void Alixcom::AlixEndConn()
     std::stringstream ss;
 
     /// Pressure Sensors
-    ss << "quit\n" << char (0xd);
+    ss << "quit" << char (0xd);
     m_AlixTCPStream->Send(ss.str());
 
 }
