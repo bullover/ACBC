@@ -34,7 +34,7 @@ private:
     Ui::ACBCGui *ui;
 
     ///Core
-    Core m_Core;
+    std::unique_ptr<Core> m_Core;
     QTimer *ptr_timer;
     const SensorData *m_ptr_Sensordata;
     SensorDataFast *m_ptr_SensordataFast;

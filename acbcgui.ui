@@ -40,14 +40,15 @@
        <enum>QFrame::Raised</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="1" column="0">
+       <item row="2" column="0">
         <widget class="QTextEdit" name="textEdit_TempRec">
          <property name="font">
           <font>
-           <pointsize>14</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
+           <pointsize>12</pointsize>
           </font>
+         </property>
+         <property name="tabStopWidth">
+          <number>60</number>
          </property>
         </widget>
        </item>
@@ -55,6 +56,13 @@
         <widget class="QLabel" name="label_17">
          <property name="text">
           <string>Temperature recorder :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_38">
+         <property name="text">
+          <string>Time                            T1             T2              T3              T4             Heater</string>
          </property>
         </widget>
        </item>
@@ -240,6 +248,16 @@
          <property name="text">
           <string>Manual</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="checkBox_Massf">
+         <property name="text">
+          <string>Show Massflow :</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -271,10 +289,13 @@
         <widget class="QTextEdit" name="textEdit_Status">
          <property name="font">
           <font>
-           <pointsize>14</pointsize>
+           <pointsize>12</pointsize>
            <weight>50</weight>
            <bold>false</bold>
           </font>
+         </property>
+         <property name="tabStopWidth">
+          <number>40</number>
          </property>
         </widget>
        </item>

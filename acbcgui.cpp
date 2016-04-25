@@ -8,11 +8,11 @@
 ///C-tor
 ACBCGui::ACBCGui(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::ACBCGui),m_Core(),ptr_timer(nullptr),m_ptr_Sensordata(nullptr),
+    ui(new Ui::ACBCGui),m_Core(nullptr),ptr_timer(nullptr),m_ptr_Sensordata(nullptr),
     m_ptr_SensordataFast(nullptr),m_Logfile(),m_PID(),m_TotalCO2(0)
 {
     ui->setupUi(this);
-
+    this->m_Core = std::make_unique<Core>();
     ///stylesheets
     this->setStyleSheet("QLCDNumber { color: black ;background-color: white }");
 
@@ -55,8 +55,8 @@ ACBCGui::ACBCGui(QWidget *parent) :
 ///D-tor
 ACBCGui::~ACBCGui()
 {
+    m_Core->SetCoreState(CoreState_t::EXIT);
     this->stopTimer();
-    m_Core.SetCoreState(CoreState_t::EXIT);
     delete Led_T5;
     delete Led_H1;
     delete Led_H2;
@@ -68,15 +68,16 @@ ACBCGui::~ACBCGui()
     delete Led_P3;
     delete Led_MV1;
     delete Led_MV2;
+    delete ptr_timer;
     delete ui;
 }
 
 ///Start pB connected Function
 void ACBCGui::Start()
 {
-    if(m_Core.GetState()==CoreState_t::IDLE)
+    if(m_Core->GetState()==CoreState_t::IDLE)
     {
-        m_Core.SetCoreState(CoreState_t::CONFIGURE);
+        m_Core->SetCoreState(CoreState_t::CONFIGURE);
         this->setTimer();
         if(!this->m_Logfile.LogFileCreate("../ACBC/LogFiles/"))
         {
@@ -84,12 +85,12 @@ void ACBCGui::Start()
         }
     }
 
-    if(m_Core.GetState()==CoreState_t::STOP)
+    if(m_Core->GetState()==CoreState_t::STOP)
     {
-         m_Core.SetCoreState(CoreState_t::START);
+         m_Core->SetCoreState(CoreState_t::START);
     }
 
-    this->m_PID.SetPID(this->ui->doubleSpinBox_Massflow->value(),2,3,4,500,500);
+    this->m_PID.SetPID(this->ui->doubleSpinBox_Massflow->value(),2,0.1,0.1,2,2);
 
 
 }
@@ -97,9 +98,9 @@ void ACBCGui::Start()
 ///Stop pB connected Function
 void ACBCGui::Stop()
 {
-    if(m_Core.GetState()==CoreState_t::START)
+    if(m_Core->GetState()==CoreState_t::START)
     {
-        m_Core.SetCoreState(CoreState_t::STOP);
+        m_Core->SetCoreState(CoreState_t::STOP);
         //this->stopTimer();
 
     }
@@ -118,9 +119,9 @@ void ACBCGui::Reset()
     }
     delete dia;
 
-    if(m_Core.GetState()==CoreState_t::ERROR||m_Core.GetState()==CoreState_t::STOP)
+    if(m_Core->GetState()==CoreState_t::ERROR||m_Core->GetState()==CoreState_t::STOP)
     {
-        m_Core.SetCoreState(CoreState_t::CONFIGURE);
+        m_Core->SetCoreState(CoreState_t::CONFIGURE);
         if(!this->m_Logfile.LogFileCreate("../ACBC/LogFiles/"))
         {
             this->ui->textEdit_Status->append(QString("ERROR: Cannot create Logfile"));
@@ -131,7 +132,7 @@ void ACBCGui::Reset()
         this->ui->frame_Pressure->clearall();
     }
 
-     this->m_PID.SetPID(this->ui->doubleSpinBox_Massflow->value(),2,3,4,500,500);
+     this->m_PID.SetPID(this->ui->doubleSpinBox_Massflow->value(),2,0.1,0.1,2,2);
 
 }
 
@@ -148,8 +149,9 @@ void ACBCGui::Quit()
     delete dia;
 
 
-    this->stopTimer();
-    m_Core.SetCoreState(CoreState_t::EXIT);
+    //this->stopTimer();
+    //m_Core->SetCoreState(CoreState_t::EXIT);
+
     this->close();
 
 }
@@ -199,9 +201,9 @@ void ACBCGui::UpdateData()
 
 
     ///Get current State form Core and Diplay
-    switch (m_Core.GetState()) {
+    switch (m_Core->GetState()) {
         case CoreState_t::ERROR:
-            ss2 << buffer << " ERROR";
+            ss2 << buffer << " ERROR : No connection to alix";
             this->ui->textEdit_Status->append(QString::fromStdString(ss2.str()));
             this->ui->pushButton_Start->setEnabled(false);
             this->ui->pushButton_Stop->setEnabled(false);
@@ -211,13 +213,14 @@ void ACBCGui::UpdateData()
             return void();
             break;
         case CoreState_t::START:
-            ss2 << buffer << " Start";
+            ss2 << buffer << " Running";
             this->ui->textEdit_Status->append(QString::fromStdString(ss2.str()));
             this->ui->pushButton_Start->setEnabled(false);
             this->ui->pushButton_Stop->setEnabled(true);
             this->ui->pushButton_Mute->setEnabled(false);
             this->ui->pushButton_Reset->setEnabled(false);
             this->ui->pushButton_CO2->setEnabled(false);
+            this->ui->doubleSpinBox_Massflow->setEnabled(false);
             break;
         case CoreState_t::STOP:
             ss2 << buffer << " Stop";
@@ -227,6 +230,7 @@ void ACBCGui::UpdateData()
             this->ui->pushButton_Mute->setEnabled(false);
             this->ui->pushButton_Reset->setEnabled(true);
             this->ui->pushButton_CO2->setEnabled(true);
+            this->ui->doubleSpinBox_Massflow->setEnabled(true);
             return void();
             break;
         case CoreState_t::EXIT:
@@ -238,8 +242,8 @@ void ACBCGui::UpdateData()
             break;
     }
     /// Get Data pointer from Core
-    this->m_ptr_Sensordata = m_Core.GetData();
-    this->m_ptr_SensordataFast = m_Core.GetDataFast();
+    this->m_ptr_Sensordata = m_Core->GetData();
+    this->m_ptr_SensordataFast = m_Core->GetDataFast();
 
     /// Diplay Temp T1-T4
     this->ui->lcdNumber_T1->display(m_ptr_Sensordata->ThermoValue[0]);
@@ -253,19 +257,19 @@ void ACBCGui::UpdateData()
 
     /// Display H1 Value and set Led
     this->ui->lcdNumber_H1->display(m_ptr_Sensordata->DP0);
-    m_ptr_Sensordata->DP0 < m_ptr_Sensordata->ThermoValue[1]-5 ? this->Led_H1->setChecked(true) : this->Led_H1->setChecked(false);
+    m_ptr_Sensordata->DP0-5 > m_ptr_Sensordata->ThermoValue[1] ? this->Led_H1->setChecked(true) : this->Led_H1->setChecked(false);
 
     /// Display H2 Value and set Led
     this->ui->lcdNumber_H2->display(m_ptr_Sensordata->DP1);
-    m_ptr_Sensordata->DP1 < m_ptr_Sensordata->ThermoValue[0]-5 ? this->Led_H2->setChecked(true) : this->Led_H2->setChecked(false);
+    m_ptr_Sensordata->DP1-5 > m_ptr_Sensordata->ThermoValue[0] ? this->Led_H2->setChecked(true) : this->Led_H2->setChecked(false);
 
     /// Display H1 Value and set Led
     this->ui->lcdNumber_H3->display(m_ptr_Sensordata->DP2);
-    m_ptr_Sensordata->DP2 < m_ptr_Sensordata->ThermoValue[3]-5 ? this->Led_H3->setChecked(true) : this->Led_H3->setChecked(false);
+    m_ptr_Sensordata->DP2-5 > m_ptr_Sensordata->ThermoValue[3] ? this->Led_H3->setChecked(true) : this->Led_H3->setChecked(false);
 
     /// Display H1 Value and set Led
     this->ui->lcdNumber_H4->display(m_ptr_Sensordata->DP3);
-    m_ptr_Sensordata->DP3 < m_ptr_Sensordata->ThermoValue[2]-5 ? this->Led_H4->setChecked(true) : this->Led_H4->setChecked(false);
+    m_ptr_Sensordata->DP3-5 > m_ptr_Sensordata->ThermoValue[2] ? this->Led_H4->setChecked(true) : this->Led_H4->setChecked(false);
 
     /// Display H1 Value and set Led
     this->ui->lcdNumber_g->display(m_ptr_Sensordata->VolValue);
@@ -273,8 +277,9 @@ void ACBCGui::UpdateData()
 
     ///T1-T4 to TempRec
     std::stringstream ss;
-    ss <<buffer<<" | "<< m_ptr_Sensordata->ThermoValue[0]<<" | "<< m_ptr_Sensordata->ThermoValue[1]
-           <<" | "<< m_ptr_Sensordata->ThermoValue[2] <<" | "<< m_ptr_Sensordata->ThermoValue[3] <<" | "<< m_ptr_Sensordata->ThermoValue[4];
+    ss <<buffer<<"\t"<< m_ptr_Sensordata->ThermoValue[0]<<"\t"<< m_ptr_Sensordata->ThermoValue[1]
+           <<"\t"<< m_ptr_Sensordata->ThermoValue[2] <<"\t"<< m_ptr_Sensordata->ThermoValue[3]
+           <<"\t"<< m_ptr_Sensordata->ThermoValue[4];
     this->ui->textEdit_TempRec->append(QString::fromStdString(ss.str()));
 
     /// Display P1 Value and set Led
@@ -290,8 +295,16 @@ void ACBCGui::UpdateData()
     m_ptr_SensordataFast->P3Value < 15 ? this->Led_P3->setChecked(false) : this->Led_P3->setChecked(true);
 
     /// Display MV1-MV2 Value and set Leds
+//    float toleranzmax;
+//    toleranzmax = this->ui->doubleSpinBox_v1->value()*1.2;
+//    float toleranzmin;
+//    toleranzmin = this->ui->doubleSpinBox_v2->value()*0.8;
     this->ui->lcdNumber_v1->display(m_ptr_SensordataFast->MV1Value);
+    ((  this->ui->doubleSpinBox_v1->value()-1 <= m_ptr_SensordataFast->MV1Value )&&(this->ui->doubleSpinBox_v1->value()+1 >m_ptr_SensordataFast->MV1Value ))?
+                this->Led_MV1->setChecked(false):this->Led_MV1->setChecked(true);
     this->ui->lcdNumber_v2->display(m_ptr_SensordataFast->MV2Value);
+    (( this->ui->doubleSpinBox_v2->value()-1 <= m_ptr_SensordataFast->MV2Value) && (this->ui->doubleSpinBox_v2->value()+1 >m_ptr_SensordataFast->MV2Value ))?
+                this->Led_MV2->setChecked(false):this->Led_MV2->setChecked(true);
 
     /// Display MassFlow Value
     this->ui->lcdNumber_massflow->display(m_ptr_SensordataFast->MassValue);
@@ -308,22 +321,24 @@ void ACBCGui::UpdateData()
     ///Plot Pressure
     this->ui->frame_Pressure->PlotGraphs(m_ptr_SensordataFast->P1Value,ui->checkBox_P1->isChecked()
                                          ,m_ptr_SensordataFast->P2Value,ui->checkBox_P2->isChecked()
-                                         ,m_ptr_SensordataFast->P3Value,ui->checkBox_P3->isChecked());
+                                         ,m_ptr_SensordataFast->P3Value,ui->checkBox_P3->isChecked()
+                                         ,m_ptr_SensordataFast->MassValue,ui->checkBox_Massf->isChecked());
 
     if(this->ui->checkBox_Mv->isChecked())
     {
         this->ui->doubleSpinBox_v1->setEnabled(true);
         this->ui->doubleSpinBox_v2->setEnabled(true);
         this->ui->doubleSpinBox_Massflow->setEnabled(false);
-        m_ptr_SensordataFast->MV1Out =this->ui->doubleSpinBox_v1->value();
+        m_ptr_SensordataFast->MV1Out = static_cast<float>(this->ui->doubleSpinBox_v1->value());
         m_ptr_SensordataFast->MV2Out = static_cast<float>(this->ui->doubleSpinBox_v2->value());
     }else
     {
         this->ui->doubleSpinBox_v1->setEnabled(false);
         this->ui->doubleSpinBox_v2->setEnabled(false);
-        this->ui->doubleSpinBox_Massflow->setEnabled(true);
-        this->m_PID.UpdatePID(this->ui->doubleSpinBox_Massflow->value());
+        //this->ui->doubleSpinBox_Massflow->setEnabled(true);
+        this->m_PID.UpdatePID(m_ptr_SensordataFast->MassValue);
         m_ptr_SensordataFast->MV1Out = this->m_PID.GetOut();
+        this->ui->doubleSpinBox_v1->setValue(this->m_PID.GetOut());
 
     }
 

@@ -24,6 +24,8 @@ private:
     float m_Out;
     float m_Imax;
     float m_Imin;
+    const float m_OutMax;
+    const float m_OutMin;
 
 };
 

@@ -53,7 +53,7 @@ void Core::CoreThread()
     while (m_BoolExit)
     {
         this->FlowControl();
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
         m_Counter > 10000 ? m_Counter = 0 : m_Counter++;
     }
     if(m_uptr_CoreAlixCom->CheckAlixTCPStream())
@@ -78,16 +78,22 @@ void Core::CoreConfig()
 
 void Core::CoreRun()
 {
-    this->m_uptr_CoreAlixCom->AlixWrite(this->m_uptr_CoreSensorDataFast);
-    this->m_uptr_CoreAlixCom->AlixReadFast(this->m_uptr_CoreSensorDataFast);
-    this->CoreDataSwapFast();
+    try{
+        this->m_uptr_CoreAlixCom->AlixWrite(this->m_uptr_CoreSensorDataFast);
+        this->m_uptr_CoreAlixCom->AlixReadFast(this->m_uptr_CoreSensorDataFast);
+        this->CoreDataSwapFast();
 
-    if(m_Counter % 3 == 0)
+        if(m_Counter % 3 == 0)
+        {
+            this->m_uptr_CoreAlixCom->AlixReadSlow(this->m_uptr_CoreSensorData);
+            this->CalcDP(m_uptr_CoreSensorData);
+            this->CoreDataSwap();
+
+        }
+    }catch(const ACBCError& rError)
     {
-        this->m_uptr_CoreAlixCom->AlixReadSlow(this->m_uptr_CoreSensorData);
-        this->CalcDP(m_uptr_CoreSensorData);
-        this->CoreDataSwap();
-
+        this->SetCoreState(CoreState_t::ERROR);
+        std::cerr << "CoreRun: " << rError.What() << '\n';
     }
 }
 

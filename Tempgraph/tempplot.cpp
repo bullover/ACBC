@@ -75,6 +75,7 @@ void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3,
 
     ///Plot Graph T1
     this->ui->QC_Templot->graph(0)->setVisible(T1vis);
+    this->ui->QC_Templot->graph(1)->setVisible(T1vis);
     this->ui->QC_Templot->graph(0)->addData(key,T1);
     this->ui->QC_Templot->graph(1)->clearData();
     this->ui->QC_Templot->graph(1)->addData(key, T1);
@@ -84,6 +85,7 @@ void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3,
         //m_KeyT1 = key;
     ///Plot Graph T2
     this->ui->QC_Templot->graph(2)->setVisible(T2vis);
+    this->ui->QC_Templot->graph(3)->setVisible(T2vis);
     this->ui->QC_Templot->graph(2)->addData(key,T2);
     this->ui->QC_Templot->graph(3)->clearData();
     this->ui->QC_Templot->graph(3)->addData(key, T2);
@@ -91,6 +93,7 @@ void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3,
 
     ///Plot Graph T3
     this->ui->QC_Templot->graph(4)->setVisible(T3vis);
+    this->ui->QC_Templot->graph(5)->setVisible(T3vis);
     this->ui->QC_Templot->graph(4)->addData(key,T3);
     this->ui->QC_Templot->graph(5)->clearData();
     this->ui->QC_Templot->graph(5)->addData(key, T3);
@@ -98,6 +101,7 @@ void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3,
 
     ///Plot Graph T4
     this->ui->QC_Templot->graph(6)->setVisible(T4vis);
+    this->ui->QC_Templot->graph(7)->setVisible(T4vis);
     this->ui->QC_Templot->graph(6)->addData(key,T4);
     this->ui->QC_Templot->graph(7)->clearData();
     this->ui->QC_Templot->graph(7)->addData(key, T4);

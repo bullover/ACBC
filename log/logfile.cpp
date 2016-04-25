@@ -9,8 +9,8 @@ LogFile::LogFile():m_LogFile(nullptr)
 }
 
 LogFile::~LogFile()
-{
-
+{   
+ m_LogFile.close();
 }
 
 bool LogFile::LogFileCreate(const std::string FilePath)
