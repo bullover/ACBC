@@ -55,8 +55,8 @@ tempplot::tempplot(QWidget *parent) :
 
     this->ui->QC_Templot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
     this->ui->QC_Templot->xAxis->setDateTimeFormat("hh:mm:ss");
-    this->ui->QC_Templot->xAxis->setAutoTickStep(false);
-    this->ui->QC_Templot->xAxis->setTickStep(10);
+    this->ui->QC_Templot->xAxis->setAutoTickStep(true);
+    //this->ui->QC_Templot->xAxis->setTickStep(10);
     this->ui->QC_Templot->axisRect()->setupFullAxesBox();
 
     // make left and bottom axes transfer their ranges to right and top axes:
@@ -69,7 +69,7 @@ tempplot::~tempplot()
     delete ui;
 }
 
-void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3, bool T3vis, double T4, bool T4vis )
+void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3, bool T3vis, double T4, bool T4vis , const int timescale)
 {
     double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
 
@@ -79,7 +79,7 @@ void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3,
     this->ui->QC_Templot->graph(0)->addData(key,T1);
     this->ui->QC_Templot->graph(1)->clearData();
     this->ui->QC_Templot->graph(1)->addData(key, T1);
-    this->ui->QC_Templot->graph(0)->removeDataBefore(key-60);
+    this->ui->QC_Templot->graph(0)->removeDataBefore(key-86400);
 
 
         //m_KeyT1 = key;
@@ -89,7 +89,7 @@ void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3,
     this->ui->QC_Templot->graph(2)->addData(key,T2);
     this->ui->QC_Templot->graph(3)->clearData();
     this->ui->QC_Templot->graph(3)->addData(key, T2);
-    this->ui->QC_Templot->graph(2)->removeDataBefore(key-60);
+    this->ui->QC_Templot->graph(2)->removeDataBefore(key-86400);
 
     ///Plot Graph T3
     this->ui->QC_Templot->graph(4)->setVisible(T3vis);
@@ -97,15 +97,28 @@ void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3,
     this->ui->QC_Templot->graph(4)->addData(key,T3);
     this->ui->QC_Templot->graph(5)->clearData();
     this->ui->QC_Templot->graph(5)->addData(key, T3);
-    this->ui->QC_Templot->graph(4)->removeDataBefore(key-60);
+    this->ui->QC_Templot->graph(4)->removeDataBefore(key-86400);
 
     ///Plot Graph T4
-    this->ui->QC_Templot->graph(6)->setVisible(T4vis);
-    this->ui->QC_Templot->graph(7)->setVisible(T4vis);
-    this->ui->QC_Templot->graph(6)->addData(key,T4);
-    this->ui->QC_Templot->graph(7)->clearData();
-    this->ui->QC_Templot->graph(7)->addData(key, T4);
-    this->ui->QC_Templot->graph(6)->removeDataBefore(key-60);
+    ///
+    if(T4vis)
+    {
+//        this->ui->QC_Templot->graph(6)->setVisible(T4vis);
+//        this->ui->QC_Templot->graph(7)->setVisible(T4vis);
+        this->ui->QC_Templot->graph(6)->addData(key,T4);
+        this->ui->QC_Templot->graph(7)->clearData();
+        this->ui->QC_Templot->graph(7)->addData(key, T4);
+        this->ui->QC_Templot->graph(6)->removeDataBefore(key-86400);
+    }else
+    {
+        if(!this->ui->QC_Templot->graph(6)->data()->empty())
+        {
+            this->ui->QC_Templot->graph(6)->clearData();
+            this->ui->QC_Templot->graph(7)->clearData();
+        }
+    }
+
+
 
     ///XY Axis ranges
 
@@ -113,7 +126,8 @@ void tempplot::PlotGraphs(double T1, bool T1vis,double T2, bool T2vis,double T3,
 //    this->ui->QC_Templot->graph(0)->rescaleValueAxis();
     this->ui->QC_Templot->rescaleAxes();
     //this->ui->QC_Templot->yAxis->setRange(-20,100,Qt::AlignCenter);
-    this->ui->QC_Templot->xAxis->setRange(key+0.25, 60, Qt::AlignRight);
+    this->ui->QC_Templot->xAxis->setRange(key+0.25, timescale , Qt::AlignRight);
+    //this->ui->QC_Templot->xAxis->autoTickStep();
     this->ui->QC_Templot->replot();
 
 

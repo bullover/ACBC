@@ -182,17 +182,19 @@ void Alixcom::AlixReadFast(std::unique_ptr<SensorDataFast> &SD)
     /// Pressure Sensors
     ss << "p0" << char (0xd);
     m_AlixTCPStream->Send(ss.str());
-    m_AlixTCPStream->Receive(RecvString,1000,char(0xd));
-    try{
-        SD->P1Value = (std::stof(RecvString)*15)-8.5;
-    }catch(const std::out_of_range& ia)
+   //int i =  m_AlixTCPStream->Receive(RecvString,1000,char(0xd));
+    if(m_AlixTCPStream->Receive(RecvString,1000,char(0xd))!=-3)
     {
-        std::cerr << "Out of Range error: " << ia.what() << '\n';
-    }catch (const std::invalid_argument& ia)
-    {
-        std::cerr << "Invalid argument p0: " << ia.what() << '\n';
+        try{
+            SD->P1Value = (std::stof(RecvString)*15)-8.5;
+        }catch(const std::out_of_range& ia)
+        {
+            std::cerr << "Out of Range error: " << ia.what() << '\n';
+        }catch (const std::invalid_argument& ia)
+        {
+            std::cerr << "Invalid argument p0: " << ia.what() << '\n';
+        }
     }
-
     ss.str("");
     RecvString.clear();
     ss << "p1" << char (0xd);
@@ -234,7 +236,7 @@ void Alixcom::AlixReadFast(std::unique_ptr<SensorDataFast> &SD)
     if(m_AlixTCPStream->Receive(RecvString,1000,char(0xd))!=-3)
     {
         try{
-            SD->MassValue= std::stof(RecvString);
+            SD->MassValue=20*(std::stof(RecvString)-4)/16;
         }catch(const std::out_of_range& ia)
         {
             std::cerr << "Out of Range error: " << ia.what() << '\n';

@@ -63,8 +63,8 @@ PressurePlot::PressurePlot(QWidget *parent) :
 
     this->ui->QC_PressurePlot->xAxis->setTickLabelType(QCPAxis::ltDateTime);
     this->ui->QC_PressurePlot->xAxis->setDateTimeFormat("hh:mm:ss");
-    this->ui->QC_PressurePlot->xAxis->setAutoTickStep(false);
-    this->ui->QC_PressurePlot->xAxis->setTickStep(10);
+    this->ui->QC_PressurePlot->xAxis->setAutoTickStep(true);
+    //this->ui->QC_PressurePlot->xAxis->setTickStep(10);
     this->ui->QC_PressurePlot->axisRect()->setupFullAxesBox();
 
     // make left and bottom axes transfer their ranges to right and top axes:
@@ -78,33 +78,36 @@ PressurePlot::~PressurePlot()
     delete ui;
 }
 
-void PressurePlot::PlotGraphs(double P1, bool P1vis,double P2, bool P2vis,double P3, bool P3vis,double MF , bool MFvis)
+void PressurePlot::PlotGraphs(double P1, bool P1vis,double P2, bool P2vis,double P3, bool P3vis,double MF , bool MFvis ,const int timescale)
 {
     double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
 
     ///Plot Graph P1
     /// Graph 0 is line graph 1 is the dot
     this->ui->QC_PressurePlot->graph(0)->setVisible(P1vis);
+    this->ui->QC_PressurePlot->graph(1)->setVisible(P1vis);
     this->ui->QC_PressurePlot->graph(0)->addData(key,P1);
     this->ui->QC_PressurePlot->graph(1)->clearData();
     this->ui->QC_PressurePlot->graph(1)->addData(key, P1);
-    this->ui->QC_PressurePlot->graph(0)->removeDataBefore(key-60);
+    this->ui->QC_PressurePlot->graph(0)->removeDataBefore(key-86400);
 
 
         //m_KeyT1 = key;
     ///Plot Graph P2
     this->ui->QC_PressurePlot->graph(2)->setVisible(P2vis);
+    this->ui->QC_PressurePlot->graph(3)->setVisible(P2vis);
     this->ui->QC_PressurePlot->graph(2)->addData(key,P2);
     this->ui->QC_PressurePlot->graph(3)->clearData();
     this->ui->QC_PressurePlot->graph(3)->addData(key, P2);
-    this->ui->QC_PressurePlot->graph(2)->removeDataBefore(key-60);
+    this->ui->QC_PressurePlot->graph(2)->removeDataBefore(key-86400);
 
     ///Plot Graph P3
     this->ui->QC_PressurePlot->graph(4)->setVisible(P3vis);
+    this->ui->QC_PressurePlot->graph(5)->setVisible(P3vis);
     this->ui->QC_PressurePlot->graph(4)->addData(key,P3);
     this->ui->QC_PressurePlot->graph(5)->clearData();
     this->ui->QC_PressurePlot->graph(5)->addData(key, P3);
-    this->ui->QC_PressurePlot->graph(4)->removeDataBefore(key-60);
+    this->ui->QC_PressurePlot->graph(4)->removeDataBefore(key-86400);
 
 
     if(MFvis)
@@ -114,7 +117,7 @@ void PressurePlot::PlotGraphs(double P1, bool P1vis,double P2, bool P2vis,double
         this->ui->QC_PressurePlot->graph(6)->addData(key,MF);
         this->ui->QC_PressurePlot->graph(7)->clearData();
         this->ui->QC_PressurePlot->graph(7)->addData(key, MF);
-        this->ui->QC_PressurePlot->graph(6)->removeDataBefore(key-60);
+        this->ui->QC_PressurePlot->graph(6)->removeDataBefore(key-86400);
     }else
     {
         if(!this->ui->QC_PressurePlot->graph(6)->data()->empty())
@@ -129,7 +132,7 @@ void PressurePlot::PlotGraphs(double P1, bool P1vis,double P2, bool P2vis,double
 //    this->ui->QC_PressurePlot->graph(0)->rescaleValueAxis();
     this->ui->QC_PressurePlot->rescaleAxes();
     //this->ui->QC_PressurePlot->yAxis->setRange(-20,100,Qt::AlignCenter);
-    this->ui->QC_PressurePlot->xAxis->setRange(key+0.25, 60, Qt::AlignRight);
+    this->ui->QC_PressurePlot->xAxis->setRange(key+0.25, timescale , Qt::AlignRight);
     this->ui->QC_PressurePlot->replot();
 
 }

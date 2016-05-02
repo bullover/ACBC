@@ -112,15 +112,21 @@ public:
 
      inline void CalcDP(std::unique_ptr<SensorData> &SD)
      {
-             float H = 0;
-             H = (log10(SD->H0Value)-2)/0.4343+(17.62*SD->H0TempValue)/(243.12+SD->H0TempValue);
-             SD->DP0 = 243.12*H/(17.62-H);
-             H = (log10(SD->H1Value)-2)/0.4343+(17.62*SD->H1TempValue)/(243.12+SD->H1TempValue);
-             SD->DP1 = 243.12*H/(17.62-H);
-             H = (log10(SD->H2Value)-2)/0.4343+(17.62*SD->H2TempValue)/(243.12+SD->H2TempValue);
-             SD->DP2 = 243.12*H/(17.62-H);
-             H = (log10(SD->H3Value)-2)/0.4343+(17.62*SD->H3TempValue)/(243.12+SD->H3TempValue);
-             SD->DP3 = 243.12*H/(17.62-H);
+
+         float H = 0;
+                     SD->H0Value = SD->H0Value<0.01?0.01:SD->H0Value;
+                     H = (log10(SD->H0Value)-2)/0.4343+(17.62*SD->H0TempValue)/(243.12+SD->H0TempValue);
+                     SD->DP0 = 243.12*H/(17.62-H);
+                     SD->H1Value = SD->H1Value<0.01?0.01:SD->H1Value;
+                     H = (log10(SD->H1Value)-2)/0.4343+(17.62*SD->H1TempValue)/(243.12+SD->H1TempValue);
+                     SD->DP1 = 243.12*H/(17.62-H);
+                     SD->H2Value = SD->H2Value<0.01?0.01:SD->H2Value;
+                     H = (log10(SD->H2Value)-2)/0.4343+(17.62*SD->H2TempValue)/(243.12+SD->H2TempValue);
+                     SD->DP2 = 243.12*H/(17.62-H);
+                     SD->H2Value = SD->H2Value<0.01?0.01:SD->H2Value;
+                     H = (log10(SD->H3Value)-2)/0.4343+(17.62*SD->H3TempValue)/(243.12+SD->H3TempValue);
+                     SD->DP3 = 243.12*H/(17.62-H);
+
      }
 
 };

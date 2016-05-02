@@ -15,7 +15,7 @@ public:
     explicit PressurePlot(QWidget *parent = 0);
     ~PressurePlot();
 
-    void PlotGraphs(double P1, bool P1vis, double P2, bool P2vis, double P3, bool P3vis, double MF, bool MFvis);
+    void PlotGraphs(double P1, bool P1vis, double P2, bool P2vis, double P3, bool P3vis, double MF, bool MFvis, const int timescale);
     void clearall();
 private:
     Ui::PressurePlot *ui;

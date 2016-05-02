@@ -16,7 +16,7 @@ public:
     explicit tempplot(QWidget *parent = 0);
     ~tempplot();
 
-    void PlotGraphs(double T1, bool T1vis, double T2, bool T2vis, double T3, bool T3vis, double T4, bool T4vis);
+    void PlotGraphs(double T1, bool T1vis, double T2, bool T2vis, double T3, bool T3vis, double T4, bool T4vis, const int timescale);
     void clearall();
 private:
     Ui::tempplot *ui;

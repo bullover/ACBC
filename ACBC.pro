@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport multimedia
 
 TARGET = ACBC
 TEMPLATE = app
@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     log/logfile.cpp \
     Dialogs/dialogaus.cpp \
     Dialogs/dialogprint.cpp \
-    PID/pid.cpp
+    PID/pid.cpp \
+    Dialogs/acbcaudio.cpp
 
 HEADERS  += acbcgui.h \
     LED/qledindicator.h \
@@ -53,7 +54,8 @@ HEADERS  += acbcgui.h \
     log/logfile.h \
     Dialogs/dialogaus.h \
     Dialogs/dialogprint.h \
-    PID/pid.h
+    PID/pid.h \
+    Dialogs/acbcaudio.h
 
 FORMS    += acbcgui.ui \
     Tempgraph/tempplot.ui \
